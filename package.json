@@ -1,0 +1,33 @@
+{
+    "name": "amiga-e",
+    "displayName": "amiga-e",
+    "description": "Language support for Amiga E",
+    "author": {
+        "name": "Jan Renken"
+    },
+    "version": "0.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lachsfilet/vscode-language-amigae.git"
+      },
+      "license": "GPL-3.0",
+    "engines": {
+        "vscode": "^1.43.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "amigae",
+            "aliases": ["Amiga E", "amigae"],
+            "extensions": [".e"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "amigae",
+            "scopeName": "source.e",
+            "path": "./syntaxes/amigae.tmLanguage.json"
+        }]
+    }
+}

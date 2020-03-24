@@ -1,0 +1,133 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Amiga E",
+	"scopeName": "source.e",
+	"patterns": [
+		{
+			"include": "#proc"
+		},
+		{
+			"include": "#object"
+		},
+		{
+			"include": "#expression"
+		}
+	],
+	"repository": {
+		"proc": {
+			"begin": "\\b(PROC)\\s+(\\w+)\\((?:\\w*(?:(:PTR\\s+TO\\s+)?\\b(?:(ARRAY|CHAR|LONG)\\b|\\b(\\w+)\\b))?,*\\s*)*\\)\\s*(?:(OF)?\\s*\\b([^(IS))]+)\\b)?",
+			"end": "\\b(ENDPROC|IS)\\b",
+			"beginCaptures": {
+				"1": {"name": "keyword.function.amigae"},
+				"2": {"name": "entity.name.function.amigae"},
+				"3": {"name": "keyword.control.amigae"},
+				"4": {"name": "keyword.type.amigae"},
+				"5": {"name": "entity.name.class.amigae"},
+				"6": {"name": "keyword.function.amigae"},
+				"7": {"name": "entity.name.class.amigae"},
+				"8": {"name": "entity.name.class.amigae"}
+			},
+			"endCaptures": {
+				"0": {"name": "keyword.function.amigae"}
+			},
+			"name": "proc.expressions",
+			"patterns": [
+				{ "include": "#expression" }
+			]	
+		},
+		"object": {
+			"begin": "\\b(EXPORT OBJECT)\\s+\\b(\\w+)\\b",
+			"end": "\\b(ENDOBJECT)\\b",
+			"beginCaptures": {
+				"1": {"name": "keyword.declaration.class.amigae"},
+				"2": {"name": "entity.name.class.amigae"}
+			},
+			"endCaptures": {
+				"0": {"name": "keyword.declaration.class.amigae"}
+			},
+			"name": "object.expressions",
+			"patterns": [
+				{ "include": "#object.member" }
+			]	
+		},
+		"object.member":{
+			"match": "\\b(PRIVATE)*\\s(\\w+)(?:(:PTR\\s+TO\\s+)?(?:\\b(ARRAY|CHAR|LONG)\\b|\\b(\\w+)\\b))?",
+			"captures": {			
+				"1": {"name": "storage.modifier.amigae"},
+				"2": {"name": "variable.other.member.amigae"},
+				"3": {"name": "keyword.control.amigae"},
+				"4": {"name": "keyword.type.amigae"},
+				"5": {"name": "entity.name.class.amigae"}
+			},
+			"patterns": [
+				{ "include": "#types" }
+			]
+		},
+		"expression": {
+			"patterns": [
+				{ 
+					"include": "#comments" 
+				},
+				{ 
+					"include": "#keywords" 
+				},
+				{ 
+					"include": "#types" 
+				},
+				{ 
+					"include": "#self" 
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#proc-call"
+				}
+			]
+		},
+		"comments": {
+			"match": "->.*",
+			"captures": {			
+				"0": {"name": "comment.line"}
+			}
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.amigae",
+				"match": "\\b(IF|ELSE|ENDIF|WHILE|ENDWHILE|FOR|RETURN|DEF|ENUM|CONST|MODULE|OPT)\\b"
+			}]
+		},
+		"types": {
+			"patterns": [{
+				"name": "keyword.type.amigae",
+				"match": "\\b(ARRAY|CHAR|LONG)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.amigae",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.amigae",
+					"match": "\\\\."
+				}
+			]
+		},
+		"self": {
+			"patterns": [{
+				"name": "variable.language.self",
+				"match": "self\\."
+			}]
+		},		
+		"proc-call" : {
+			"match": "\\b(\\w+)\\(.*\\)",
+			"captures": {			
+				"1": {"name": "entity.name.function.amigae"}
+			},
+			"patterns": [
+				{ "include": "#strings" }
+			]
+		}
+	}
+}
