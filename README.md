@@ -17,4 +17,4 @@ The first goal is to complete the syntax highlighting.
 
 ### 0.0.2
 
-- Enhanced grammar
+- Enhanced proc and object grammar
