@@ -4,13 +4,17 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 
 ## Features
 
-This extension enables code highlighting for the Amiga E programming language in Visual Studio Code.
+This extension enables code highlighting for the Amiga E programming language in Visual Studio Code. This is the only feature so far.
 
 ## Release Notes
 
-The development of this extension is still in the beginning and thus unreleased.
+The first goal is to complete the syntax highlighting.
 
 ### 0.0.1
 
 - Extension created
 - First grammar implemented
+
+### 0.0.2
+
+- Enhanced grammar
