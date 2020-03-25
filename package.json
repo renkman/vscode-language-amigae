@@ -2,6 +2,7 @@
     "name": "amiga-e",
     "displayName": "amiga-e",
     "description": "Language support for Amiga E",
+    "publisher":"renkman",
     "author": {
         "name": "Jan Renken"
     },

@@ -15,7 +15,7 @@
 	],
 	"repository": {
 		"proc": {
-			"begin": "\\b(PROC)\\s+(\\w+)\\((?:\\w*(?:(:PTR\\s+TO\\s+)?\\b(?:(ARRAY|CHAR|LONG)\\b|\\b(\\w+)\\b))?,*\\s*)*\\)\\s*(?:(OF)?\\s*\\b([^(IS))]+)\\b)?",
+			"begin": "\\b(PROC)\\s+(\\w+)\\((?:\\w*(?:(:PTR\\s+TO\\s+)?\\b(?:(ARRAY|CHAR|LONG)\\b|\\b(\\w+)\\b))?,?\\s*)*\\)\\s*(?:(OF)?\\s*\\b([^(IS))]+)\\b)?",
 			"end": "\\b(ENDPROC|IS)\\b",
 			"beginCaptures": {
 				"1": {"name": "keyword.function.amigae"},
@@ -36,7 +36,7 @@
 			]	
 		},
 		"object": {
-			"begin": "\\b(EXPORT OBJECT)\\s+\\b(\\w+)\\b",
+			"begin": "\\b((?:EXPORT )?OBJECT)\\s+\\b(\\w+)\\b",
 			"end": "\\b(ENDOBJECT)\\b",
 			"beginCaptures": {
 				"1": {"name": "keyword.declaration.class.amigae"},
@@ -94,7 +94,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.amigae",
-				"match": "\\b(IF|ELSE|ENDIF|WHILE|ENDWHILE|FOR|RETURN|DEF|ENUM|CONST|MODULE|OPT)\\b"
+				"match": "\\b(IF|ELSE|ENDIF|WHILE|ENDWHILE|FOR|RETURN|DEF|ENUM|CONST|MODULE|OPT|NIL|AND|OR)\\b"
 			}]
 		},
 		"types": {
@@ -121,12 +121,30 @@
 			}]
 		},		
 		"proc-call" : {
-			"match": "\\b(\\w+)\\(.*\\)",
-			"captures": {			
-				"1": {"name": "entity.name.function.amigae"}
+			"name": "proc.call",
+			"begin": "\\b(\\w+)\\b(\\()",
+			"end": "(\\))",
+			"beginCaptures": {			
+				"1": {"name": "entity.name.function.amigae"},
+				"2": {"name": "punctuation.definition.begin.bracket.round.amigae"}
 			},
-			"patterns": [
-				{ "include": "#strings" }
+			"endCaptures": {
+				"1": {"name":"punctuation.definition.end.bracket.round"}
+			},
+			"patterns" : [
+				{
+					"include": "#proc-arguments"
+				}
+			]
+		},
+		"proc-arguments" : {
+			"begin" : "(?:(?<=\\()|(?<=,))",
+			"end" : "(?:(?=\\)|,))",
+			"name": "proc.arguments",
+			"patterns" : [
+				{
+					"include": "#expression"
+				}
 			]
 		}
 	}
