@@ -21,8 +21,8 @@
 	],
 	"repository": {		
 		"one-line-proc-declaration": {
-			"begin": "\\b(PROC)\\b\\s+(?=.*IS)",
-			"end": "\\b(IS)\\b",
+			"begin": "\\b(PROC)\\b\\s+(?=.*(IS|RETURN))",
+			"end": "\\b(IS|RETURN)\\b",
 			"beginCaptures": {
 				"1": {"name": "keyword.function.amigae"}
 			},
@@ -35,7 +35,7 @@
 			]
 		},
 		"one-line-proc-expression": {
-			"begin": "(?<=IS)\\s",
+			"begin": "((?<=IS)|(?<=RETURN))\\s",
 			"end": "\\n",
 			"name": "onelineproc.expressions",
 			"patterns": [
@@ -54,7 +54,7 @@
 			"name": "proc.expressions",
 			"patterns": [
 				{ "include": "#proc-declaration" },
-				{ "include": "#expression" }
+				{ "include": "#proc-body" }
 			]
 		},
 		"proc-declaration": {
@@ -78,6 +78,14 @@
 			"end" : "(?:(?=\\)|,))",
 			"patterns": [
 				{ "include": "#argument-declaration" }
+		 	]
+		},		
+		"proc-body": {
+			"name": "proc.body",
+			"begin" : "$",
+			"end" : "^(?=\\bENDPROC\\b)",
+			"patterns": [
+				{ "include": "#expression" }
 		 	]
 		},
 		"object": {
@@ -108,12 +116,13 @@
 		},
 		"argument-declaration":{
 			"name": "argument.declaration",
-			"match": "\\b(\\w+)(?:(:PTR\\s+TO\\s+)?(?:\\b(ARRAY|CHAR|LONG)\\b|\\b(\\w+)\\b))?",
+			"match": "\\s*\\b([_$[:alpha:]]\\w*)(?:(:PTR\\s+TO\\s+)?(?:\\b(ARRAY|CHAR|LONG)\\b|\\b([_$[:alpha:]]\\w*)\\b))?(?:\\s*\\=(\\d.?\\d?))?",
 			"captures": {			
 				"1": {"name": "variable.other.member.amigae"},
 				"2": {"name": "keyword.control.amigae"},
 				"3": {"name": "keyword.type.amigae"},
-				"4": {"name": "entity.name.class.amigae"}
+				"4": {"name": "entity.name.class.amigae"},
+				"5": {"name": "constant.numeric.amigae"}
 			}
 		},
 		"expression": {

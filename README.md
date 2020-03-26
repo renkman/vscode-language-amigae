@@ -10,11 +10,15 @@ This extension enables code highlighting for the Amiga E programming language in
 
 The first goal is to complete the syntax highlighting.
 
-### 0.0.1
+### 0.0.3
 
-- Extension created
-- First grammar implemented
+- Completed proc and one line proc grammar
 
 ### 0.0.2
 
 - Enhanced proc and object grammar
+
+### 0.0.1
+
+- Extension created
+- First grammar implemented
