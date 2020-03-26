@@ -4,6 +4,12 @@
 	"scopeName": "source.e",
 	"patterns": [
 		{
+			"include": "#one-line-proc-declaration"
+		},		
+		{
+			"include": "#one-line-proc-expression"
+		},		
+		{
 			"include": "#proc"
 		},
 		{
@@ -13,10 +19,32 @@
 			"include": "#expression"
 		}
 	],
-	"repository": {
+	"repository": {		
+		"one-line-proc-declaration": {
+			"begin": "\\b(PROC)\\b\\s+(?=.*IS)",
+			"end": "\\b(IS)\\b",
+			"beginCaptures": {
+				"1": {"name": "keyword.function.amigae"}
+			},
+			"endCaptures": {
+				"1": {"name": "keyword.function.amigae"}
+			},
+			"name": "onelineproc.declaration",
+			"patterns": [
+				{ "include": "#proc-declaration" }
+			]
+		},
+		"one-line-proc-expression": {
+			"begin": "(?<=IS)\\s",
+			"end": "\\n",
+			"name": "onelineproc.expressions",
+			"patterns": [
+				{ "include": "#expression" }
+			]
+		},
 		"proc": {
-			"begin": "\\b(PROC)\\s+",
-			"end": "\\b(ENDPROC|IS)\\b",
+			"begin": "\\b(PROC)\\b\\s+",
+			"end": "\\b(ENDPROC)\\b",
 			"beginCaptures": {
 				"1": {"name": "keyword.function.amigae"}
 			},
@@ -27,7 +55,7 @@
 			"patterns": [
 				{ "include": "#proc-declaration" },
 				{ "include": "#expression" }
-			]	
+			]
 		},
 		"proc-declaration": {
 			"name": "proc.declaration",
@@ -119,7 +147,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.amigae",
-				"match": "\\b(IF|ELSE|ENDIF|WHILE|ENDWHILE|FOR|RETURN|DEF|ENUM|CONST|MODULE|OPT|NIL|AND|OR)\\b"
+				"match": "\\b(IF|ELSE|ENDIF|WHILE|ENDWHILE|FOR|RETURN|DEF|ENUM|CONST|MODULE|OPT|NIL|AND|OR|NEW)\\b"
 			}]
 		},
 		"types": {
