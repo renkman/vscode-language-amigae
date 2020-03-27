@@ -10,6 +10,9 @@
 			"include": "#module-definition"
 		},
 		{
+			"include": "#enum"
+		},
+		{
 			"include": "#one-line-proc-declaration"
 		},		
 		{
@@ -42,6 +45,26 @@
 					"include": "#strings"
 				}
 			]
+		},
+		"enum": {
+			"name": "enum",
+			"begin": "\\b(ENUM)\\b",
+			"end": "$",
+			"captures": {			
+				"0": {"name": "keyword.declaration.enum.amigae"}
+			},
+			"patterns": [
+				{ 
+					"include": "#enum-constant"
+				}
+			]
+		},
+		"enum-constant": {
+			"name": "enum.constant",
+			"match": "(?:(?<=(?:ENUM))|(?<=,))\\s*(\\w+)\\s*,?",
+			"captures" : {
+				"1": {"name": "constant.other.enum"}
+			}
 		},
 		"expression": {
 			"patterns": [
