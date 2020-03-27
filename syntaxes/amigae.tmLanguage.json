@@ -4,6 +4,12 @@
 	"scopeName": "source.e",
 	"patterns": [
 		{
+			"include": "#module-import"
+		},
+		{
+			"include": "#module-definition"
+		},
+		{
 			"include": "#one-line-proc-declaration"
 		},		
 		{
@@ -14,12 +20,117 @@
 		},
 		{
 			"include": "#object"
-		},
-		{
-			"include": "#expression"
 		}
 	],
-	"repository": {		
+	"repository": {
+		"module-definition": {
+			"name": "module.definition",
+			"match": "\\bOPT\\s+MODULE\\b",
+			"captures": {			
+				"0": {"name": "keyword.control.amigae"}
+			}
+		},
+		"module-import": {
+			"name": "module.import",
+			"begin": "\\b(MODULE)\\s+(?=')",
+			"end": "(?<=')$",
+			"beginCaptures": {			
+				"1": {"name": "keyword.control.amigae"}
+			},
+			"patterns": [
+				{ 
+					"include": "#strings"
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{ 
+					"include": "#comments" 
+				},
+				{ 
+					"include": "#keywords" 
+				},
+				{ 
+					"include": "#types" 
+				},
+				{ 
+					"include": "#self" 
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#proc-call"
+				}
+			]
+		},
+		"statement": {
+				"patterns": [
+				{ 
+					"include": "#comments" 
+				},
+				{ 
+					"include": "#keywords" 
+				},
+				{ 
+					"include": "#types" 
+				},
+				{ 
+					"include": "#self" 
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#if-one-line-expression"
+				},
+				{
+					"include": "#if-one-line-statement"
+				},
+				{
+					"include": "#if-block"
+				},
+				{
+					"include": "#proc-call"
+				}				
+			]
+		},
+		"comments": {
+			"match": "->.*",
+			"captures": {			
+				"0": {"name": "comment.line"}
+			}
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.amigae",
+				"match": "\\b(WHILE|ENDWHILE|FOR|DEF|ENUM|CONST|NIL|AND|OR|NEW)\\b"
+			}]
+		},
+		"types": {
+			"patterns": [{
+				"name": "keyword.type.amigae",
+				"match": "\\b(ARRAY|CHAR|LONG)\\b"
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.amigae",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.amigae",
+					"match": "\\\\."
+				}
+			]
+		},
+		"self": {
+			"patterns": [{
+				"name": "variable.language.self",
+				"match": "self\\."
+			}]
+		},		
 		"one-line-proc-declaration": {
 			"begin": "\\b(PROC)\\b\\s+(?=.*(IS|RETURN))",
 			"end": "\\b(IS|RETURN)\\b",
@@ -39,16 +150,13 @@
 			"end": "\\n",
 			"name": "onelineproc.expressions",
 			"patterns": [
-				{ "include": "#expression" }
+				{ "include": "#statement" }
 			]
 		},
 		"proc": {
-			"begin": "\\b(PROC)\\b\\s+",
-			"end": "\\b(ENDPROC)\\b",
-			"beginCaptures": {
-				"1": {"name": "keyword.function.amigae"}
-			},
-			"endCaptures": {
+			"begin": "\\bPROC\\b\\s+",
+			"end": "\\bENDPROC\\b",
+			"captures": {
 				"0": {"name": "keyword.function.amigae"}
 			},
 			"name": "proc.expressions",
@@ -85,7 +193,7 @@
 			"begin" : "$",
 			"end" : "^(?=\\bENDPROC\\b)",
 			"patterns": [
-				{ "include": "#expression" }
+				{ "include": "#statement" }
 		 	]
 		},
 		"object": {
@@ -125,63 +233,6 @@
 				"5": {"name": "constant.numeric.amigae"}
 			}
 		},
-		"expression": {
-			"patterns": [
-				{ 
-					"include": "#comments" 
-				},
-				{ 
-					"include": "#keywords" 
-				},
-				{ 
-					"include": "#types" 
-				},
-				{ 
-					"include": "#self" 
-				},
-				{
-					"include": "#strings"
-				},
-				{
-					"include": "#proc-call"
-				}
-			]
-		},
-		"comments": {
-			"match": "->.*",
-			"captures": {			
-				"0": {"name": "comment.line"}
-			}
-		},
-		"keywords": {
-			"patterns": [{
-				"name": "keyword.control.amigae",
-				"match": "\\b(IF|ELSE|ENDIF|WHILE|ENDWHILE|FOR|RETURN|DEF|ENUM|CONST|MODULE|OPT|NIL|AND|OR|NEW)\\b"
-			}]
-		},
-		"types": {
-			"patterns": [{
-				"name": "keyword.type.amigae",
-				"match": "\\b(ARRAY|CHAR|LONG)\\b"
-			}]
-		},
-		"strings": {
-			"name": "string.quoted.double.amigae",
-			"begin": "'",
-			"end": "'",
-			"patterns": [
-				{
-					"name": "constant.character.escape.amigae",
-					"match": "\\\\."
-				}
-			]
-		},
-		"self": {
-			"patterns": [{
-				"name": "variable.language.self",
-				"match": "self\\."
-			}]
-		},		
 		"proc-call" : {
 			"name": "proc.call",
 			"begin": "\\b(\\w+)\\b(\\()",
@@ -208,6 +259,60 @@
 					"include": "#expression"
 				}
 			]
+		},
+		"if-one-line-expression": {
+			"begin" : "\\bIF\\b(?=.*(THEN))",
+			"end" : "\\bTHEN\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},
+			"name":"if.oneline.expression",
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"if-one-line-statement": {
+			"begin": "((?<=THEN)|(ELSE))\\s",
+			"end": "\\n",
+			"beginCaptures": {
+				"1": {"name": "keyword.control.amigae"}
+			},
+			"name": "if.oneline.statement",
+			"patterns": [
+				{ "include": "#statement" }
+			]
+		},
+		"if-block": {
+			"begin" : "\\b(IF|ELSE)\\b",
+			"end" : "\\bENDIF\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},
+			"name":"if.block",
+			"patterns":[
+				{
+					"include": "#if-block-expressions"
+				},
+				{
+					"include": "#if-block-statements"
+				}
+			]
+		},
+		"if-block-expressions": {
+			"name":"if.block.expressions",
+			"begin" : "((?<=IF)|(?<=ELSE))\\s*",
+			"end" : "$",
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"if-block-statements": {
+			"name": "if.block.statements",
+			"begin" : "\\n",
+			"end" : "^\\s*(?=\\bENDIF\\b)",
+			"patterns": [
+				{ "include": "#statement" }
+		 	]
 		}
 	}
 }
