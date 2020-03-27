@@ -4,10 +4,19 @@
 	"scopeName": "source.e",
 	"patterns": [
 		{
+			"include": "#comment-one-line"
+		},
+		{
+			"include": "#comment-multi-line"
+		},
+		{
 			"include": "#module-import"
 		},
 		{
 			"include": "#module-definition"
+		},
+		{
+			"include": "#const"
 		},
 		{
 			"include": "#enum"
@@ -30,7 +39,7 @@
 			"name": "module.definition",
 			"match": "\\bOPT\\s+MODULE\\b",
 			"captures": {			
-				"0": {"name": "keyword.control.amigae"}
+				"0": {"name": "keyword.module.amigae"}
 			}
 		},
 		"module-import": {
@@ -38,7 +47,7 @@
 			"begin": "\\b(MODULE)\\s+(?=')",
 			"end": "(?<=')$",
 			"beginCaptures": {			
-				"1": {"name": "keyword.control.amigae"}
+				"1": {"name": "keyword.module.amigae"}
 			},
 			"patterns": [
 				{ 
@@ -46,9 +55,32 @@
 				}
 			]
 		},
+		"const": {
+			"name": "const",
+			"begin":"\\bCONST\\b",
+			"end":"$",
+			"captures": {			
+				"0": {"name": "keyword.const.amigae"}
+			},
+			"patterns": [
+				{ 
+					"include": "#const-assignment"
+				}
+			]
+		},
+		"const-assignment": {
+			"name": "const.asignment",
+			"begin": "(?:(?<=(?:CONST))|(?<=,)\\s*(\\w+)\\s*=)",
+			"end":"(,|$)",
+			"patterns": [
+				{ 
+					"include": "#expression"
+				}
+			]
+		},
 		"enum": {
 			"name": "enum",
-			"begin": "\\b(ENUM)\\b",
+			"begin": "\\bENUM\\b",
 			"end": "$",
 			"captures": {			
 				"0": {"name": "keyword.declaration.enum.amigae"}
@@ -61,15 +93,19 @@
 		},
 		"enum-constant": {
 			"name": "enum.constant",
-			"match": "(?:(?<=(?:ENUM))|(?<=,))\\s*(\\w+)\\s*,?",
+			"match": "(?:(?<=(?:ENUM))|(?<=,))\\s*(\\w+)\\s*(=\\s*(\\d)\\s*)?,?",
 			"captures" : {
-				"1": {"name": "constant.other.enum"}
+				"1": {"name": "constant.other.enum.amigae"},
+				"2": {"name": "constant.numeric.enum.amigae"}
 			}
 		},
 		"expression": {
 			"patterns": [
-				{ 
-					"include": "#comments" 
+				{
+					"include": "#comment-one-line"
+				},
+				{
+					"include": "#comment-multi-line"
 				},
 				{ 
 					"include": "#keywords" 
@@ -91,19 +127,7 @@
 		"statement": {
 				"patterns": [
 				{ 
-					"include": "#comments" 
-				},
-				{ 
-					"include": "#keywords" 
-				},
-				{ 
-					"include": "#types" 
-				},
-				{ 
-					"include": "#self" 
-				},
-				{
-					"include": "#strings"
+					"include": "#expression" 
 				},
 				{
 					"include": "#if-one-line-expression"
@@ -113,22 +137,37 @@
 				},
 				{
 					"include": "#if-block"
-				},
-				{
-					"include": "#proc-call"
 				}				
 			]
 		},
-		"comments": {
+		"comment-one-line": {
 			"match": "->.*",
 			"captures": {			
 				"0": {"name": "comment.line"}
 			}
 		},
+		"comment-multi-line": {
+			"begin": "/\\*.*",
+			"end": "\\*/",
+			"captures": {			
+				"0": {"name": "comment.line"}
+			},
+			"patterns": [
+				{ 
+					"include": "#comment-line" 
+				}
+			]
+		},
+		"comment-line": {
+			"patterns": [{
+				"name": "comment.line",
+				"match": ".*"
+			}]
+		},
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.amigae",
-				"match": "\\b(WHILE|ENDWHILE|FOR|DEF|ENUM|CONST|NIL|AND|OR|NEW)\\b"
+				"match": "\\b(WHILE|ENDWHILE|FOR|DEF|NIL|AND|OR|NEW)\\b"
 			}]
 		},
 		"types": {
