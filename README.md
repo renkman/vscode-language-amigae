@@ -12,7 +12,7 @@ The first goal is to complete the syntax highlighting.
 
 ### 0.0.5
 
-- Introduced for and while loop grammar
+- Introduced for, while and repeat until loop grammar
 
 ### 0.0.4
 
