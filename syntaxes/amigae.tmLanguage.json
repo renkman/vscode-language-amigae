@@ -99,6 +99,17 @@
 				"2": {"name": "constant.numeric.enum.amigae"}
 			}
 		},
+		"var-assignment": {
+			"name": "var.assignment",
+			"begin": "\\b([_$[:alpha:]]\\w*)\\b\\s*:=(?=.*$)",
+			"end": "$",
+			"beginCaptures" : {
+				"1": {"name": "variable.amigae"}
+			},
+			"patterns":[
+				{"include": "#expression"}
+			]
+		},
 		"expression": {
 			"patterns": [
 				{
@@ -113,6 +124,9 @@
 				{ 
 					"include": "#types" 
 				},
+				{
+					"include": "#const-numeric"
+				},
 				{ 
 					"include": "#self" 
 				},
@@ -121,6 +135,10 @@
 				},
 				{
 					"include": "#proc-call"
+				},
+				{
+					"name": "variable.amigae",
+					"match": "\\b[_$[:alpha:]]\\w*\\b"
 				}
 			]
 		},
@@ -156,6 +174,9 @@
 				{
 					"include": "#repeat-until-expression"
 				},
+				{
+					"include": "#var-assignment"
+				},
 				{ 
 					"include": "#expression" 
 				}
@@ -184,6 +205,12 @@
 				"match": "\\b(ARRAY|CHAR|LONG)\\b"
 			}]
 		},
+		"const-numeric": {
+			"patterns": [{
+				"name": "constant.numeric.amigae",
+				"match": "\\b\\d+(\\.\\d+)?\\b"
+			}]
+		},
 		"strings": {
 			"name": "string.quoted.double.amigae",
 			"begin": "'",
@@ -197,7 +224,7 @@
 		},
 		"self": {
 			"patterns": [{
-				"name": "variable.language.self",
+				"name": "variable.language.self.amigae",
 				"match": "self\\."
 			}]
 		},		
@@ -305,11 +332,12 @@
 		},
 		"proc-call" : {
 			"name": "proc.call",
-			"begin": "\\b(\\w+)\\b(\\()",
+			"begin": "(?:([_$[:alpha:]]\\w*)\\.)?\\b([_$[:alpha:]]\\w*)\\b(\\()",
 			"end": "(\\))",
 			"beginCaptures": {			
-				"1": {"name": "entity.name.function.amigae"},
-				"2": {"name": "punctuation.definition.begin.bracket.round.amigae"}
+				"1": {"name": "variable.amigae"},
+				"2": {"name": "entity.name.function.amigae"},
+				"3": {"name": "punctuation.definition.begin.bracket.round.amigae"}
 			},
 			"endCaptures": {
 				"1": {"name":"punctuation.definition.end.bracket.round"}
@@ -488,14 +516,12 @@
 		},
 		"for-loop-expression-a": {
 			"name":"for.expression.a",
-			"begin" : "(?<=FOR)\\s+",
-			"end" : "\\bTO\\b",
-			"captures": {"0": {"name": "keyword.control.amigae"}},
-			"patterns":[
-				{
-					"include": "#expression"
-				}
-			]
+			"match" : "(?<=FOR)\\s+\\b([_$[:alpha:]]\\w*)\\b\\s*:=\\s*\\b(\\d+(?:\\.\\d+)?)\\s+\\b(TO)\\b",
+			"captures": {
+				"1": {"name": "variable.amigae"},
+				"2": {"name": "constant.numeric.amigae"},
+				"3": {"name": "keyword.control.amigae"}
+			}
 		},
 		"for-loop-expression-b": {
 			"name":"for.expression.b",
