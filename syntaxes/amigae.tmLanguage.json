@@ -139,10 +139,16 @@
 					"include": "#while-loop-one-line-expression"
 				},
 				{
-					"include": "#while-loop-one-line-statement"
+					"include": "#for-loop-one-line-expression"
+				},
+				{
+					"include": "#loop-one-line-statement"
 				},
 				{
 					"include": "#while-loop"
+				},
+				{
+					"include": "#for-loop"
 				},
 				{ 
 					"include": "#expression" 
@@ -396,7 +402,7 @@
 				}
 			]
 		},
-		"while-loop-one-line-statement": {
+		"loop-one-line-statement": {
 			"begin": "(?<=(DO))\\s",
 			"end": "$",
 			"name": "while.oneline.statement",
@@ -432,6 +438,86 @@
 			"name": "while.statements",
 			"begin" : "\\n",
 			"end" : "^\\s*(?=\\bENDWHILE\\b)",
+			"patterns": [
+				{ "include": "#statement" }
+		 	]
+		},
+		"for-loop-one-line-expression": {
+			"begin" : "\\FOR\\b(?=.*\\bDO\\b)",
+			"end" : "\\bDO\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},
+			"name":"for.oneline.expression",
+			"patterns":[
+				{
+					"include": "#for-loop-expression-a"
+				},
+				{
+					"include": "#for-loop-one-line-expression-b"
+				}
+			]
+		},
+		"for-loop-one-line-expression-b": {
+			"name":"for.expression.b",
+			"begin" : "(?<=TO)\\s+",
+			"end" : "(?=\\bDO\\b)",
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"for-loop": {
+			"name": "for.loop",
+			"begin": "\\b(FOR)\\b",
+			"end": "\\b(ENDFOR)\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},	
+			"patterns":[
+				{
+					"include": "#for-loop-expressions"
+				},
+				{
+					"include": "#for-loop-statements"
+				}
+			]
+		},
+		"for-loop-expressions": {
+			"name":"for.expressions",
+			"begin" : "(?<=FOR)",
+			"end" : "$",
+			"patterns":[
+				{
+					"include": "#for-loop-expression-a"
+				},
+				{
+					"include": "#for-loop-expression-b"
+				}
+			]
+		},
+		"for-loop-expression-a": {
+			"name":"for.expression.a",
+			"begin" : "(?<=FOR)\\s+",
+			"end" : "\\bTO\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"for-loop-expression-b": {
+			"name":"for.expression.b",
+			"begin" : "(?<=TO)\\s+",
+			"end" : "(?=$)",
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"for-loop-statements": {
+			"name": "for.statements",
+			"begin" : "\\n",
+			"end" : "^\\s*(?=\\bENDFOR\\b)",
 			"patterns": [
 				{ "include": "#statement" }
 		 	]
