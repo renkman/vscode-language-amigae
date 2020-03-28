@@ -10,9 +10,13 @@ This extension enables code highlighting for the Amiga E programming language in
 
 The first goal is to complete the syntax highlighting.
 
+### 0.0.6
+
+- Added repeat until syntax
+
 ### 0.0.5
 
-- Introduced for, while and repeat until loop grammar
+- Introduced for and while loop grammar
 
 ### 0.0.4
 
