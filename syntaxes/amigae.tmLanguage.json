@@ -150,6 +150,12 @@
 				{
 					"include": "#for-loop"
 				},
+				{
+					"include": "#repeat-until-loop"
+				},
+				{
+					"include": "#repeat-until-expression"
+				},
 				{ 
 					"include": "#expression" 
 				}
@@ -162,14 +168,15 @@
 			}
 		},
 		"comment-multi-line": {
-			"begin": "/\\*",
-			"end": "\\*/",
+			"begin": "\\/\\*",
+			"end": "\\*\\/",
 			"captures": {			
 				"0": {"name": "comment.line"}
 			},
 			"patterns": [
 				{ 
-					"include": "#comment-line" 
+					"name": "comment.line",
+					"match": ".*"
 				}
 			]
 		},
@@ -520,6 +527,23 @@
 			"end" : "^\\s*(?=\\bENDFOR\\b)",
 			"patterns": [
 				{ "include": "#statement" }
+		 	]
+		},
+		"repeat-until-loop":{
+			"name": "repeat.loop",
+			"begin": "\\bREPEAT\\b\\s*$",
+			"end": "\\bUNTIL\\b",
+			"captures" : {"0": {"name": "keyword.control.amigae"}},
+			"patterns": [
+				{ "include": "#statement" }
+		 	]
+		},
+		"repeat-until-expression":{
+			"name":"until.expression",
+			"begin" : "(?<=UNTIL)\\s+",
+			"end" : "(?=$)",
+			"patterns": [
+				{ "include": "#expression" }
 		 	]
 		}
 	}
