@@ -7,7 +7,7 @@
 			"include": "#comment-one-line"
 		},
 		{
-			"include": "#comment-multi-line"
+			"include": "#comment-block"
 		},
 		{
 			"include": "#module-import"
@@ -105,7 +105,7 @@
 					"include": "#comment-one-line"
 				},
 				{
-					"include": "#comment-multi-line"
+					"include": "#comment-block"
 				},
 				{ 
 					"include": "#keywords" 
@@ -167,24 +167,10 @@
 				"0": {"name": "comment.line"}
 			}
 		},
-		"comment-multi-line": {
-			"begin": "\\/\\*",
-			"end": "\\*\\/",
-			"captures": {			
-				"0": {"name": "comment.line"}
-			},
-			"patterns": [
-				{ 
-					"name": "comment.line",
-					"match": ".*"
-				}
-			]
-		},
-		"comment-line": {
-			"patterns": [{
-				"name": "comment.line",
-				"match": ".*"
-			}]
+		"comment-block": {
+			"name": "comment.block",
+			"begin": "/\\*",
+			"end": "\\*/"
 		},
 		"keywords": {
 			"patterns": [{
