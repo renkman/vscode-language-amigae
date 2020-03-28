@@ -136,6 +136,12 @@
 					"include": "#if-block"
 				},				
 				{
+					"include": "#while-loop-one-line-expression"
+				},
+				{
+					"include": "#while-loop-one-line-statement"
+				},
+				{
 					"include": "#while-loop"
 				},
 				{ 
@@ -150,7 +156,7 @@
 			}
 		},
 		"comment-multi-line": {
-			"begin": "/\\*.*",
+			"begin": "/\\*",
 			"end": "\\*/",
 			"captures": {			
 				"0": {"name": "comment.line"}
@@ -170,7 +176,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.amigae",
-				"match": "\\b(WHILE|ENDWHILE|FOR|DEF|NIL|AND|OR|NEW)\\b"
+				"match": "\\b(DEF|NIL|AND|OR|NEW)\\b"
 			}]
 		},
 		"types": {
@@ -197,7 +203,7 @@
 			}]
 		},		
 		"one-line-proc-declaration": {
-			"begin": "\\b(PROC)\\b\\s+(?=.*(IS|RETURN))",
+			"begin": "\\b(PROC)\\b\\s+(?=.*\\b(IS|RETURN)\\b)",
 			"end": "\\b(IS|RETURN)\\b",
 			"beginCaptures": {
 				"1": {"name": "keyword.function.amigae"}
@@ -212,7 +218,7 @@
 		},
 		"one-line-proc-expression": {
 			"begin": "((?<=IS)|(?<=RETURN))\\s",
-			"end": "\\n",
+			"end": "$",
 			"name": "onelineproc.expressions",
 			"patterns": [
 				{ "include": "#statement" }
@@ -326,7 +332,7 @@
 			]
 		},
 		"if-one-line-expression": {
-			"begin" : "\\bIF\\b(?=.*(THEN))",
+			"begin" : "\\bIF\\b(?=.*\\bTHEN\\b)",
 			"end" : "\\bTHEN\\b",
 			"captures": {"0": {"name": "keyword.control.amigae"}},
 			"name":"if.oneline.expression",
@@ -338,7 +344,7 @@
 		},
 		"if-one-line-statement": {
 			"begin": "((?<=THEN)|(ELSE))\\s",
-			"end": "\\n",
+			"end": "$",
 			"beginCaptures": {
 				"1": {"name": "keyword.control.amigae"}
 			},
@@ -378,6 +384,25 @@
 			"patterns": [
 				{ "include": "#statement" }
 		 	]
+		},
+		"while-loop-one-line-expression": {
+			"begin" : "\\bWHILE\\b\\s+(?=.*\\bDO\\b)",
+			"end" : "\\bDO\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},
+			"name":"while.oneline.expression",
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"while-loop-one-line-statement": {
+			"begin": "(?<=(DO))\\s",
+			"end": "$",
+			"name": "while.oneline.statement",
+			"patterns": [
+				{ "include": "#statement" }
+			]
 		},
 		"while-loop": {
 			"name": "while.loop",
