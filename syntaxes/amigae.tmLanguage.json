@@ -21,6 +21,9 @@
 		{
 			"include": "#enum"
 		},
+		{ 
+			"include": "#keywords" 
+		},
 		{
 			"include": "#one-line-proc-declaration"
 		},		
@@ -121,11 +124,17 @@
 				{ 
 					"include": "#keywords" 
 				},
+				{
+					"include": "#operators"
+				},
 				{ 
-					"include": "#types" 
+					"include": "#types"
 				},
 				{
 					"include": "#const-numeric"
+				},
+				{
+					"include": "#object-instantiation"
 				},
 				{ 
 					"include": "#self" 
@@ -193,10 +202,16 @@
 			"begin": "/\\*",
 			"end": "\\*/"
 		},
+		"operators": {
+			"patterns": [{
+				"name": "keyword.operator.amigae",
+				"match": "\\b(\\+|-|\\*|/|\\^|AND|OR|<|>|<>|=)\\b"
+			}]
+		},
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.control.amigae",
-				"match": "\\b(DEF|NIL|AND|OR|NEW)\\b"
+				"match": "\\b(DEF|NIL)\\b"
 			}]
 		},
 		"types": {
@@ -227,7 +242,14 @@
 				"name": "variable.language.self.amigae",
 				"match": "self\\."
 			}]
-		},		
+		},
+		"object-instantiation": {
+			"match":"(NEW)\\s+\\b([_$[:alpha:]]\\w*)\\b",
+			"captures": {
+				"1": {"name": "keyword.operator.new"},
+				"2": {"name": "entity.name.class"}
+			}
+		},
 		"one-line-proc-declaration": {
 			"begin": "\\b(PROC)\\b\\s+(?=.*\\b(IS|RETURN)\\b)",
 			"end": "\\b(IS|RETURN)\\b",
