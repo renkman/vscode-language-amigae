@@ -126,9 +126,6 @@
 		},
 		"statement": {
 				"patterns": [
-				{ 
-					"include": "#expression" 
-				},
 				{
 					"include": "#if-one-line-expression"
 				},
@@ -137,7 +134,13 @@
 				},
 				{
 					"include": "#if-block"
-				}				
+				},				
+				{
+					"include": "#while-loop"
+				},
+				{ 
+					"include": "#expression" 
+				}
 			]
 		},
 		"comment-one-line": {
@@ -360,7 +363,7 @@
 		},
 		"if-block-expressions": {
 			"name":"if.block.expressions",
-			"begin" : "((?<=IF)|(?<=ELSE))\\s*",
+			"begin" : "((?<=IF)|(?<=ELSE))",
 			"end" : "$",
 			"patterns":[
 				{
@@ -372,6 +375,38 @@
 			"name": "if.block.statements",
 			"begin" : "\\n",
 			"end" : "^\\s*(?=\\bENDIF\\b)",
+			"patterns": [
+				{ "include": "#statement" }
+		 	]
+		},
+		"while-loop": {
+			"name": "while.loop",
+			"begin": "\\b(WHILE)\\b",
+			"end": "\\b(ENDWHILE)\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},			
+			"patterns":[
+				{
+					"include": "#while-loop-expressions"
+				},
+				{
+					"include": "#while-loop-statements"
+				}
+			]
+		},
+		"while-loop-expressions": {
+			"name":"while.expressions",
+			"begin" : "(?<=WHILE)",
+			"end" : "$",
+			"patterns":[
+				{
+					"include": "#expression"
+				}
+			]
+		},
+		"while-loop-statements": {
+			"name": "while.statements",
+			"begin" : "\\n",
+			"end" : "^\\s*(?=\\bENDWHILE\\b)",
 			"patterns": [
 				{ "include": "#statement" }
 		 	]
