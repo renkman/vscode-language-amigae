@@ -214,6 +214,9 @@
 					"include": "#if-one-line-statement"
 				},
 				{
+					"include": "#if-one-line-else"
+				},				
+				{
 					"include": "#if-block"
 				},				
 				{
@@ -432,9 +435,9 @@
 			]
 		},
 		"if-one-line-statement": {
-			"begin": "((?<=THEN)|(ELSE))\\s",
-			"end": "$",
-			"beginCaptures": {
+			"begin": "(?<=THEN)\\s",
+			"end": "((?=ELSE)|$)",
+			"captures": {
 				"1": {"name": "keyword.control.amigae"}
 			},
 			"name": "if.oneline.statement",
@@ -442,26 +445,53 @@
 				{ "include": "#statement" }
 			]
 		},
+		"if-one-line-else": {
+			"begin": "ELSE\\s",
+			"end": "$",
+			"captures": {
+				"0": {"name": "keyword.control.amigae"}
+			},
+			"name": "if.oneline.else",
+			"patterns": [
+				{ "include": "#statement" }
+			]
+		},
 		"if-block": {
-			"begin" : "\\b(IF|ELSE|ELSEIF)\\b",
+			"begin" : "\\bIF\\b",
 			"end" : "\\bENDIF\\b",
 			"captures": {"0": {"name": "keyword.control.amigae"}},
 			"name":"if.block",
 			"patterns":[
 				{
 					"name":"if.block.expressions",
-					"begin" : "((?<=IF)|(?<=ELSE)|(?<=ELSEIF))",
+					"begin" : "(?<=IF)",
 					"end" : "$",
 					"patterns":[
-						{
-							"include": "#expression"
-						}
+						{ "include": "#expression" }
 					]
 				},
 				{
 					"name": "if.block.statements",
 					"begin" : "\\n",
-					"end" : "^\\s*(?=\\bENDIF\\b)",
+					"end" : "((?=\\bENDIF\\b)|(?=\\bELSEIF\\b)|(?=\\bELSE\\b))",
+					"patterns": [
+						{ "include": "#statement" }
+					]
+				},
+				{
+					"name": "if.block.elseif",
+					"begin" : "ELSEIF",
+					"end" : "((?=\\bENDIF\\b)|(?=\\bELSEIF\\b)|(?=\\bELSE\\b))",
+					"captures": {"0": {"name":"keyword.control.amigae"}},
+					"patterns": [
+						{ "include": "#statement" }
+					]
+				},
+				{
+					"name": "if.block.else",
+					"begin" : "ELSE",
+					"end" : "(?=\\bENDIF\\b)",
+					"captures": {"0": {"name":"keyword.control.amigae"}},
 					"patterns": [
 						{ "include": "#statement" }
 					]
