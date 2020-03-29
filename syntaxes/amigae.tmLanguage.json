@@ -21,6 +21,9 @@
 		{
 			"include": "#enum"
 		},
+		{
+			"include": "#def"
+		},
 		{ 
 			"include": "#nil" 
 		},
@@ -102,7 +105,7 @@
 				"2": {"name": "constant.numeric.enum.amigae"}
 			}
 		},
-		"var-declaration": {
+		"def": {
 			"name": "var.declaration.def",
 			"begin": "\\b(DEF)\\b",
 			"end": "(?=[^,])$",
@@ -111,24 +114,27 @@
 			},
 			"patterns": [
 				{
-					"name":"var.declaration",
-					"begin": "\\b([_$[:alpha:]]\\w*)\\b",
-					"end": "(,\\s*|$)",
-					"captures": {
-						"1": {"name": "variable.amigae"}
-					},
-					"patterns": [
-						{
-							"include":"#array-declaration"
-						},
-						{
-							"include":"#pointer-declaration"
-						},
-						{
-							"include":"#list-string-declaration"
-						}		
-					]
+					"include": "#var-declaration"
 				}
+			]
+		},
+		"var-declaration" : {
+			"name":"var.declaration",
+			"begin": "\\b([_$[:alpha:]]\\w*)\\b",
+			"end": "(,\\s*|$|(?=\\)))",
+			"captures": {
+				"1": {"name": "variable.amigae"}
+			},
+			"patterns": [
+				{
+					"include":"#array-declaration"
+				},
+				{
+					"include":"#pointer-declaration"
+				},
+				{
+					"include":"#list-string-declaration"
+				}		
 			]
 		},
 		"array-declaration": {
@@ -138,7 +144,7 @@
 				"1": {"name": "constant.numeric.amigae"},
 				"2": {"name": "variable.amigae"},
 				"3": {"name": "keyword.type.amigae"},
-				"4": {"name": "keyword.control.amigae"},
+				"4": {"name": "keyword.type.amigae"},
 				"5": {"name": "keyword.type.amigae"},
 				"6": {"name": "entity.name.class.amigae"}
 			}
@@ -148,7 +154,7 @@
 			"match": "\\s*\\:\\s*\\b(PTR)\\b\\s+\\b(TO)\\b\\s+(?:\\b(CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b)",
 			"captures": {
 				"1": {"name": "storage.type.uintptr.amigae"},
-				"2": {"name": "keyword.control.amigae"},
+				"2": {"name": "keyword.type.amigae"},
 				"3": {"name": "keyword.type.amigae"},
 				"4": {"name": "entity.name.class.amigae"}
 			}
@@ -244,7 +250,7 @@
 					"include": "#repeat-until-expression"
 				},
 				{
-					"include": "#var-declaration"
+					"include": "#def"
 				},
 				{
 					"include": "#var-assignment"
@@ -367,7 +373,7 @@
 			"begin" : "(?:(?<=\\()|(?<=,))",
 			"end" : "(?:(?=\\)|,))",
 			"patterns": [
-				{ "include": "#argument-declaration" }
+				{ "include": "#var-declaration" }
 		 	]
 		},		
 		"proc-body": {
@@ -401,20 +407,9 @@
 				"1": {"name": "storage.modifier.amigae"}
 			},
 			"patterns": [
-				{ "include": "#argument-declaration" }
+				{ "include": "#var-declaration" }
 			]
-		},
-		"argument-declaration":{
-			"name": "argument.declaration",
-			"match": "\\s*\\b([_$[:alpha:]]\\w*)(?:(:PTR\\s+TO\\s+)?(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b))?(?:\\s*\\=(\\d.?\\d?))?",
-			"captures": {			
-				"1": {"name": "variable.other.member.amigae"},
-				"2": {"name": "keyword.control.amigae"},
-				"3": {"name": "keyword.type.amigae"},
-				"4": {"name": "entity.name.class.amigae"},
-				"5": {"name": "constant.numeric.amigae"}
-			}
-		},
+		},		
 		"proc-call" : {
 			"name": "proc.call",
 			"begin": "(?:([_$[:alpha:]]\\w*)\\.)?\\b([_$[:alpha:]]\\w*)\\b(\\()",
