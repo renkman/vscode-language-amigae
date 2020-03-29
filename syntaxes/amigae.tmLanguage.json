@@ -443,14 +443,14 @@
 			]
 		},
 		"if-block": {
-			"begin" : "\\b(IF|ELSE)\\b",
+			"begin" : "\\b(IF|ELSE|ELSEIF)\\b",
 			"end" : "\\bENDIF\\b",
 			"captures": {"0": {"name": "keyword.control.amigae"}},
 			"name":"if.block",
 			"patterns":[
 				{
 					"name":"if.block.expressions",
-					"begin" : "((?<=IF)|(?<=ELSE))",
+					"begin" : "((?<=IF)|(?<=ELSE)|(?<=ELSEIF))",
 					"end" : "$",
 					"patterns":[
 						{
