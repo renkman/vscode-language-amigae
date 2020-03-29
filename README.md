@@ -12,6 +12,10 @@ The first goal is to complete the syntax highlighting.
 
 ### 0.0.8
 
+- Added variable declaration grammar
+
+### 0.0.8
+
 - Added operators
 
 ### 0.0.7

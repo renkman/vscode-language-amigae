@@ -22,7 +22,7 @@
 			"include": "#enum"
 		},
 		{ 
-			"include": "#keywords" 
+			"include": "#nil" 
 		},
 		{
 			"include": "#one-line-proc-declaration"
@@ -102,6 +102,66 @@
 				"2": {"name": "constant.numeric.enum.amigae"}
 			}
 		},
+		"var-declaration": {
+			"name": "var.declaration.def",
+			"begin": "\\b(DEF)\\b",
+			"end": "(?=[^,])$",
+			"beginCaptures" : {
+				"1": {"name": "keyword.control.def.amigae"}
+			},
+			"patterns": [
+				{
+					"name":"var.declaration",
+					"begin": "\\b([_$[:alpha:]]\\w*)\\b",
+					"end": "(,\\s*|$)",
+					"captures": {
+						"1": {"name": "variable.amigae"}
+					},
+					"patterns": [
+						{
+							"include":"#array-declaration"
+						},
+						{
+							"include":"#pointer-declaration"
+						},
+						{
+							"include":"#list-string-declaration"
+						}		
+					]
+				}
+			]
+		},
+		"array-declaration": {
+			"name": "var.declaration.array",
+			"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(ARRAY)\\b(?:\\s+\\b(OF)\\b\\s+(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b))?",
+			"captures": {
+				"1": {"name": "constant.numeric.amigae"},
+				"2": {"name": "variable.amigae"},
+				"3": {"name": "keyword.type.amigae"},
+				"4": {"name": "keyword.control.amigae"},
+				"5": {"name": "keyword.type.amigae"},
+				"6": {"name": "entity.name.class.amigae"}
+			}
+		},
+		"pointer-declaration": {
+			"name": "var.declaration.pointer",
+			"match": "\\s*\\:\\s*\\b(PTR)\\b\\s+\\b(TO)\\b\\s+(?:\\b(CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b)",
+			"captures": {
+				"1": {"name": "storage.type.uintptr.amigae"},
+				"2": {"name": "keyword.control.amigae"},
+				"3": {"name": "keyword.type.amigae"},
+				"4": {"name": "entity.name.class.amigae"}
+			}
+		},
+		"list-string-declaration": {
+			"name": "var.declaration.array",
+			"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(LIST|STRING)\\b",
+			"captures": {
+				"1": {"name": "constant.numeric.amigae"},
+				"2": {"name": "variable.amigae"},
+				"3": {"name": "keyword.type.amigae"}
+			}
+		},
 		"var-assignment": {
 			"name": "var.assignment",
 			"begin": "\\b([_$[:alpha:]]\\w*)\\b\\s*:=(?=.*$)",
@@ -122,7 +182,7 @@
 					"include": "#comment-block"
 				},
 				{ 
-					"include": "#keywords" 
+					"include": "#nil" 
 				},
 				{
 					"include": "#operators"
@@ -184,6 +244,9 @@
 					"include": "#repeat-until-expression"
 				},
 				{
+					"include": "#var-declaration"
+				},
+				{
 					"include": "#var-assignment"
 				},
 				{ 
@@ -208,16 +271,16 @@
 				"match": "\\b(\\+|-|\\*|/|\\^|AND|OR|<|>|<>|=)\\b"
 			}]
 		},
-		"keywords": {
+		"nil": {
 			"patterns": [{
-				"name": "keyword.control.amigae",
-				"match": "\\b(DEF|NIL)\\b"
+				"name": "constant.language.nil.amigae",
+				"match": "\\bNIL\\b"
 			}]
 		},
 		"types": {
 			"patterns": [{
 				"name": "keyword.type.amigae",
-				"match": "\\b(ARRAY|CHAR|LONG)\\b"
+				"match": "\\b(ARRAY|CHAR|LONG|INT)\\b"
 			}]
 		},
 		"const-numeric": {
@@ -292,7 +355,7 @@
 				"1": {"name": "entity.name.function.amigae"}
 			},
 			"endCaptures": {
-				"1": {"name": "keyword.function.amigae"},
+				"1": {"name": "keyword.type.amigae"},
 				"2": {"name": "entity.name.class.amigae"}
 			},
 			"patterns": [
@@ -343,7 +406,7 @@
 		},
 		"argument-declaration":{
 			"name": "argument.declaration",
-			"match": "\\s*\\b([_$[:alpha:]]\\w*)(?:(:PTR\\s+TO\\s+)?(?:\\b(ARRAY|CHAR|LONG)\\b|\\b([_$[:alpha:]]\\w*)\\b))?(?:\\s*\\=(\\d.?\\d?))?",
+			"match": "\\s*\\b([_$[:alpha:]]\\w*)(?:(:PTR\\s+TO\\s+)?(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b))?(?:\\s*\\=(\\d.?\\d?))?",
 			"captures": {			
 				"1": {"name": "variable.other.member.amigae"},
 				"2": {"name": "keyword.control.amigae"},
@@ -448,7 +511,7 @@
 		"loop-one-line-statement": {
 			"begin": "(?<=(DO))\\s",
 			"end": "$",
-			"name": "while.oneline.statement",
+			"name": "loop.oneline.statement",
 			"patterns": [
 				{ "include": "#statement" }
 			]
@@ -495,20 +558,17 @@
 					"include": "#for-loop-expression-a"
 				},
 				{
-					"include": "#for-loop-one-line-expression-b"
+					"name":"for.expression.b",
+					"begin" : "(?<=TO)\\s+",
+					"end" : "(?=\\bDO\\b)",
+					"patterns":[
+						{
+							"include": "#expression"
+						}
+					]
 				}
 			]
-		},
-		"for-loop-one-line-expression-b": {
-			"name":"for.expression.b",
-			"begin" : "(?<=TO)\\s+",
-			"end" : "(?=\\bDO\\b)",
-			"patterns":[
-				{
-					"include": "#expression"
-				}
-			]
-		},
+		},	
 		"for-loop": {
 			"name": "for.loop",
 			"begin": "\\b(FOR)\\b",
@@ -516,24 +576,33 @@
 			"captures": {"0": {"name": "keyword.control.amigae"}},	
 			"patterns":[
 				{
-					"include": "#for-loop-expressions"
+					"name":"for.expressions",
+					"begin" : "(?<=FOR)",
+					"end" : "$",
+					"patterns":[
+						{
+							"include": "#for-loop-expression-a"
+						},
+						{
+							"name":"for.expression.b",
+							"begin" : "(?<=TO)\\s+",
+							"end" : "(?=$)",
+							"patterns":[
+								{
+									"include": "#expression"
+								}
+							]
+						}
+					]
 				},
 				{
-					"include": "#for-loop-statements"
-				}
-			]
-		},
-		"for-loop-expressions": {
-			"name":"for.expressions",
-			"begin" : "(?<=FOR)",
-			"end" : "$",
-			"patterns":[
-				{
-					"include": "#for-loop-expression-a"
-				},
-				{
-					"include": "#for-loop-expression-b"
-				}
+					"name": "for.statements",
+					"begin" : "\\n",
+					"end" : "^\\s*(?=\\bENDFOR\\b)",
+					"patterns": [
+						{ "include": "#statement" }
+					 ]
+				}			
 			]
 		},
 		"for-loop-expression-a": {
@@ -544,24 +613,6 @@
 				"2": {"name": "constant.numeric.amigae"},
 				"3": {"name": "keyword.control.amigae"}
 			}
-		},
-		"for-loop-expression-b": {
-			"name":"for.expression.b",
-			"begin" : "(?<=TO)\\s+",
-			"end" : "(?=$)",
-			"patterns":[
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"for-loop-statements": {
-			"name": "for.statements",
-			"begin" : "\\n",
-			"end" : "^\\s*(?=\\bENDFOR\\b)",
-			"patterns": [
-				{ "include": "#statement" }
-		 	]
 		},
 		"repeat-until-loop":{
 			"name": "repeat.loop",
