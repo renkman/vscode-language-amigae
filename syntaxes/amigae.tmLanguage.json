@@ -300,7 +300,7 @@
 		"self": {
 			"patterns": [{
 				"name": "variable.language.self.amigae",
-				"match": "self\\."
+				"match": "\\bself\\.\\b"
 			}]
 		},
 		"object-instantiation": {
@@ -346,6 +346,10 @@
 					"begin" : "$",
 					"end" : "^(?=\\bENDPROC\\b)",
 					"patterns": [
+						{
+							"name": "keyword.function.amigae",
+							"match": "\\bEXCEPT\\b"
+						},
 						{ "include": "#statement" }
 					 ]
 				}
@@ -354,13 +358,14 @@
 		"proc-declaration": {
 			"name": "proc.declaration",
 			"begin": "\\b(\\w+)\\(",
-			"end": "\\)\\s*(?:(OF)\\s+\\b(\\w+)\\b)?",
+			"end": "\\)(?:\\s+(OF)\\s+\\b(\\w+)\\b)?(?:\\s+\\b(HANDLE)\\b)?",
 			"beginCaptures": {
 				"1": {"name": "entity.name.function.amigae"}
 			},
 			"endCaptures": {
 				"1": {"name": "keyword.type.amigae"},
-				"2": {"name": "entity.name.class.amigae"}
+				"2": {"name": "entity.name.class.amigae"},
+				"3": {"name": "keyword.function.amigae"}
 			},
 			"patterns": [
 				{
