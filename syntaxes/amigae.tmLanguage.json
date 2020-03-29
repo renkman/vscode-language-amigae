@@ -92,18 +92,15 @@
 				"0": {"name": "keyword.declaration.enum.amigae"}
 			},
 			"patterns": [
-				{ 
-					"include": "#enum-constant"
+				{
+					"name": "enum.constant",
+					"match": "(?:(?<=(?:ENUM))|(?<=,))\\s*(\\w+)\\s*(=\\s*(\\d)\\s*)?,?",
+					"captures" : {
+						"1": {"name": "constant.other.enum.amigae"},
+						"2": {"name": "constant.numeric.enum.amigae"}
+					}
 				}
 			]
-		},
-		"enum-constant": {
-			"name": "enum.constant",
-			"match": "(?:(?<=(?:ENUM))|(?<=,))\\s*(\\w+)\\s*(=\\s*(\\d)\\s*)?,?",
-			"captures" : {
-				"1": {"name": "constant.other.enum.amigae"},
-				"2": {"name": "constant.numeric.enum.amigae"}
-			}
 		},
 		"def": {
 			"name": "var.declaration.def",
@@ -127,46 +124,37 @@
 			},
 			"patterns": [
 				{
-					"include":"#array-declaration"
+					"name": "var.declaration.array",
+					"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(ARRAY)\\b(?:\\s+\\b(OF)\\b\\s+(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b))?",
+					"captures": {
+						"1": {"name": "constant.numeric.amigae"},
+						"2": {"name": "variable.amigae"},
+						"3": {"name": "keyword.type.amigae"},
+						"4": {"name": "keyword.type.amigae"},
+						"5": {"name": "keyword.type.amigae"},
+						"6": {"name": "entity.name.class.amigae"}
+					}
 				},
 				{
-					"include":"#pointer-declaration"
+					"name": "var.declaration.pointer",
+					"match": "\\s*\\:\\s*\\b(PTR)\\b\\s+\\b(TO)\\b\\s+(?:\\b(CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b)",
+					"captures": {
+						"1": {"name": "storage.type.uintptr.amigae"},
+						"2": {"name": "keyword.type.amigae"},
+						"3": {"name": "keyword.type.amigae"},
+						"4": {"name": "entity.name.class.amigae"}
+					}
 				},
 				{
-					"include":"#list-string-declaration"
-				}		
+					"name": "var.declaration.array",
+					"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(LIST|STRING)\\b",
+					"captures": {
+						"1": {"name": "constant.numeric.amigae"},
+						"2": {"name": "variable.amigae"},
+						"3": {"name": "keyword.type.amigae"}
+					}	
+				}
 			]
-		},
-		"array-declaration": {
-			"name": "var.declaration.array",
-			"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(ARRAY)\\b(?:\\s+\\b(OF)\\b\\s+(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b))?",
-			"captures": {
-				"1": {"name": "constant.numeric.amigae"},
-				"2": {"name": "variable.amigae"},
-				"3": {"name": "keyword.type.amigae"},
-				"4": {"name": "keyword.type.amigae"},
-				"5": {"name": "keyword.type.amigae"},
-				"6": {"name": "entity.name.class.amigae"}
-			}
-		},
-		"pointer-declaration": {
-			"name": "var.declaration.pointer",
-			"match": "\\s*\\:\\s*\\b(PTR)\\b\\s+\\b(TO)\\b\\s+(?:\\b(CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b)",
-			"captures": {
-				"1": {"name": "storage.type.uintptr.amigae"},
-				"2": {"name": "keyword.type.amigae"},
-				"3": {"name": "keyword.type.amigae"},
-				"4": {"name": "entity.name.class.amigae"}
-			}
-		},
-		"list-string-declaration": {
-			"name": "var.declaration.array",
-			"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(LIST|STRING)\\b",
-			"captures": {
-				"1": {"name": "constant.numeric.amigae"},
-				"2": {"name": "variable.amigae"},
-				"3": {"name": "keyword.type.amigae"}
-			}
 		},
 		"var-assignment": {
 			"name": "var.assignment",
@@ -350,7 +338,14 @@
 			"name": "proc.expressions",
 			"patterns": [
 				{ "include": "#proc-declaration" },
-				{ "include": "#proc-body" }
+				{
+					"name": "proc.body",
+					"begin" : "$",
+					"end" : "^(?=\\bENDPROC\\b)",
+					"patterns": [
+						{ "include": "#statement" }
+					 ]
+				}
 			]
 		},
 		"proc-declaration": {
@@ -365,24 +360,15 @@
 				"2": {"name": "entity.name.class.amigae"}
 			},
 			"patterns": [
-				{ "include": "#proc-declaration-arguments" }
+				{
+					"name": "proc.declaration.arguments",
+					"begin" : "(?:(?<=\\()|(?<=,))",
+					"end" : "(?:(?=\\)|,))",
+					"patterns": [
+						{ "include": "#var-declaration" }
+					 ]
+				}
 			]
-		},
-		"proc-declaration-arguments": {
-			"name": "proc.declaration.arguments",
-			"begin" : "(?:(?<=\\()|(?<=,))",
-			"end" : "(?:(?=\\)|,))",
-			"patterns": [
-				{ "include": "#var-declaration" }
-		 	]
-		},		
-		"proc-body": {
-			"name": "proc.body",
-			"begin" : "$",
-			"end" : "^(?=\\bENDPROC\\b)",
-			"patterns": [
-				{ "include": "#statement" }
-		 	]
 		},
 		"object": {
 			"begin": "\\b((?:EXPORT )?OBJECT)\\s+\\b(\\w+)\\b",
@@ -396,20 +382,19 @@
 			},
 			"name": "object.expressions",
 			"patterns": [
-				{ "include": "#object.member" }
+				{
+					"name": "object.member",
+					"begin": "\\b(PRIVATE\\s+)?(?=\\b)",
+					"end": "\\n",
+					"beginCaptures": {			
+						"1": {"name": "storage.modifier.amigae"}
+					},
+					"patterns": [
+						{ "include": "#var-declaration" }
+					]
+				}
 			]	
 		},
-		"object.member":{
-			"name": "object.member",
-			"begin": "\\b(PRIVATE\\s+)?(?=\\b)",
-			"end": "\\n",
-			"beginCaptures": {			
-				"1": {"name": "storage.modifier.amigae"}
-			},
-			"patterns": [
-				{ "include": "#var-declaration" }
-			]
-		},		
 		"proc-call" : {
 			"name": "proc.call",
 			"begin": "(?:([_$[:alpha:]]\\w*)\\.)?\\b([_$[:alpha:]]\\w*)\\b(\\()",
@@ -424,17 +409,14 @@
 			},
 			"patterns" : [
 				{
-					"include": "#proc-arguments"
-				}
-			]
-		},
-		"proc-arguments" : {
-			"begin" : "(?:(?<=\\()|(?<=,))",
-			"end" : "(?:(?=\\)|,))",
-			"name": "proc.arguments",
-			"patterns" : [
-				{
-					"include": "#expression"
+					"begin" : "(?:(?<=\\()|(?<=,))",
+					"end" : "(?:(?=\\)|,))",
+					"name": "proc.arguments",
+					"patterns" : [
+						{
+							"include": "#expression"
+						}
+					]
 				}
 			]
 		},
@@ -467,31 +449,25 @@
 			"name":"if.block",
 			"patterns":[
 				{
-					"include": "#if-block-expressions"
+					"name":"if.block.expressions",
+					"begin" : "((?<=IF)|(?<=ELSE))",
+					"end" : "$",
+					"patterns":[
+						{
+							"include": "#expression"
+						}
+					]
 				},
 				{
-					"include": "#if-block-statements"
+					"name": "if.block.statements",
+					"begin" : "\\n",
+					"end" : "^\\s*(?=\\bENDIF\\b)",
+					"patterns": [
+						{ "include": "#statement" }
+					]
 				}
 			]
-		},
-		"if-block-expressions": {
-			"name":"if.block.expressions",
-			"begin" : "((?<=IF)|(?<=ELSE))",
-			"end" : "$",
-			"patterns":[
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"if-block-statements": {
-			"name": "if.block.statements",
-			"begin" : "\\n",
-			"end" : "^\\s*(?=\\bENDIF\\b)",
-			"patterns": [
-				{ "include": "#statement" }
-		 	]
-		},
+		},		
 		"while-loop-one-line-expression": {
 			"begin" : "\\bWHILE\\b\\s+(?=.*\\bDO\\b)",
 			"end" : "\\bDO\\b",
@@ -518,31 +494,25 @@
 			"captures": {"0": {"name": "keyword.control.amigae"}},			
 			"patterns":[
 				{
-					"include": "#while-loop-expressions"
+					"name":"while.expressions",
+					"begin" : "(?<=WHILE)",
+					"end" : "$",
+					"patterns":[
+						{
+							"include": "#expression"
+						}
+					]
 				},
 				{
-					"include": "#while-loop-statements"
+					"name": "while.statements",
+					"begin" : "\\n",
+					"end" : "^\\s*(?=\\bENDWHILE\\b)",
+					"patterns": [
+						{ "include": "#statement" }
+					]
 				}
 			]
-		},
-		"while-loop-expressions": {
-			"name":"while.expressions",
-			"begin" : "(?<=WHILE)",
-			"end" : "$",
-			"patterns":[
-				{
-					"include": "#expression"
-				}
-			]
-		},
-		"while-loop-statements": {
-			"name": "while.statements",
-			"begin" : "\\n",
-			"end" : "^\\s*(?=\\bENDWHILE\\b)",
-			"patterns": [
-				{ "include": "#statement" }
-		 	]
-		},
+		},		
 		"for-loop-one-line-expression": {
 			"begin" : "\\FOR\\b(?=.*\\bDO\\b)",
 			"end" : "\\bDO\\b",
