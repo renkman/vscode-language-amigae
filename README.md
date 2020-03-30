@@ -10,6 +10,10 @@ This extension enables code highlighting for the Amiga E programming language in
 
 The first draft of is now ready for testing.
 
+### 0.1.4
+
+- Added SELECT .. OF block syntax
+
 ### 0.1.3
 
 - Fixed IF grammar bug

@@ -239,8 +239,11 @@
 					"include": "#if-block"
 				},				
 				{
+					"include": "#select-of-block"
+				},
+				{
 					"include": "#select-block"
-				},				
+				},
 				{
 					"include": "#while-loop-one-line-expression"
 				},
@@ -561,12 +564,73 @@
 			"name":"select.block",
 			"patterns":[
 				{
-					"name":"select.block.expressions",
+					"name":"select.case.expressions",
 					"begin" : "\\bCASE\\b",
 					"captures": {"0": {"name": "keyword.control.amigae"}},
 					"end" : "$",
 					"patterns":[
 						{ "include": "#expression" }
+					]
+				},
+				{
+					"name": "select.block.statements",
+					"begin" : "\\n",
+					"end" : "((?=\\bCASE\\b)|(?=\\bDEFAULT\\b)|(?=\\bENDSELECT\\b))",
+					"patterns": [
+						{ "include": "#statement" }
+					]
+				},				
+				{
+					"name": "select.block.default",
+					"begin" : "DEFAULT",
+					"end" : "(?=\\bENDSELECT\\b)",
+					"captures": {"0": {"name":"keyword.control.amigae"}},
+					"patterns": [
+						{ "include": "#statement" }
+					]
+				}
+			]
+		},
+		"select-of-block": {
+			"begin" : "\\b(SELECT)\\s+(?:(\\d+)|([_$[:alpha:]]\\w*))\\s+\\b(OF)\\b",
+			"end" : "\\b(ENDSELECT)\\b",
+			"beginCaptures": {
+				"1": {"name": "keyword.control.amigae"},
+				"2": {"name": "constant.numeric.amigae"},
+				"3": {"name": "variable.amigae"},
+				"4": {"name": "keyword.control.amigae"}
+			},
+			"endCaptures": {
+				"0": {"name": "keyword.control.amigae"}
+			},
+			"name":"selectof.block",
+			"patterns":[
+				{
+					"name":"select.block.expressions",
+					"begin" : "(?<=OF)",
+					"end" : "$",
+					"captures": {"0": {"name": "keyword.control.amigae"}},
+					"patterns":[
+						{ "include": "#expression" }
+					]
+				},
+				{
+					"name":"select.case.expressions",
+					"begin" : "\\bCASE\\b",
+					"end" : "$",
+					"captures": {"0": {"name": "keyword.control.amigae"}},
+					"patterns":[
+						{
+							"name":"select.case.expression",
+							"match": "(?:(?<=CASE)|(?<=,))\\s(?:(\\d+)|([_$[:alpha:]]\\w*))(?:\\s+(TO)\\s+(?:(\\d+)|([_$[:alpha:]]\\w*)))?,?",
+							"captures": {
+								"1": {"name": "keyword.constant.numeric.amigae"},
+								"2": {"name": "variable.amigae"},
+								"3": {"name": "keyword.control.amigae"},
+								"4": {"name": "keyword.constant.numeric.amigae"},
+								"5": {"name": "variable.amigae"}
+							}
+						}
 					]
 				},
 				{
