@@ -8,7 +8,11 @@ This extension enables code highlighting for the Amiga E programming language in
 
 ## Release Notes
 
-The first draft of is now ready for testing.
+The first draft of the grammar is now ready for testing.
+
+### 0.1.5
+
+- Fixed readme typo
 
 ### 0.1.4
 
