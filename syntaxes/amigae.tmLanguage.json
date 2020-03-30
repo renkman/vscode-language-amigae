@@ -46,7 +46,7 @@
 	"repository": {
 		"module-definition": {
 			"name": "module.definition",
-			"match": "\\bOPT\\s+MODULE\\b",
+			"match": "\\bOPT\\s+(MODULE|EXPORT)\\b",
 			"captures": {			
 				"0": {"name": "keyword.module.amigae"}
 			}
@@ -445,16 +445,10 @@
 			"name": "object.expressions",
 			"patterns": [
 				{
-					"name": "object.member",
-					"begin": "\\b(PRIVATE\\s+)?(?=\\b)",
-					"end": "\\n",
-					"beginCaptures": {			
-						"1": {"name": "storage.modifier.amigae"}
-					},
-					"patterns": [
-						{ "include": "#var-declaration" }
-					]
-				}
+					"name": "storage.modifier.amigae",
+					"match": "\\b(PRIVATE|PUBLIC)\\b"
+				},
+				{ "include": "#var-declaration" }
 			]	
 		},
 		"proc-call" : {
