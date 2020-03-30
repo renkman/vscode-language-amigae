@@ -25,6 +25,9 @@
 			"include": "#def"
 		},
 		{ 
+			"include": "#bool-constants" 
+		},		
+		{ 
 			"include": "#nil" 
 		},
 		{
@@ -146,7 +149,7 @@
 					}
 				},
 				{
-					"name": "var.declaration.array",
+					"name": "var.declaration.liststring",
 					"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(LIST|STRING)\\b",
 					"captures": {
 						"1": {"name": "constant.numeric.amigae"},
@@ -176,6 +179,9 @@
 					"include": "#comment-block"
 				},
 				{ 
+					"include": "#bool-constants" 
+				},		
+				{ 
 					"include": "#nil" 
 				},
 				{
@@ -200,6 +206,19 @@
 					"include": "#proc-call"
 				},
 				{
+					"name": "keyword.control.amigae",
+					"match": "\\b(BUT)\\b"
+				},
+				{
+					"name": "sizeof.amigae",
+					"match": "\\b(SIZEOF)\\s+(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b)",
+					"captures": {
+						"1": {"name" : "keyword.control.amigae"},
+						"2": {"name" : "keyword.type.amigae"},
+						"3": {"name" : "entity.name.class"}
+					}
+				},
+				{
 					"name": "variable.amigae",
 					"match": "\\b[_$[:alpha:]]\\w*\\b"
 				}
@@ -218,6 +237,9 @@
 				},				
 				{
 					"include": "#if-block"
+				},				
+				{
+					"include": "#select-block"
 				},				
 				{
 					"include": "#while-loop-one-line-expression"
@@ -241,10 +263,33 @@
 					"include": "#repeat-until-expression"
 				},
 				{
+					"include": "#loop-block"
+				},				
+				{
 					"include": "#def"
 				},
 				{
 					"include": "#var-assignment"
+				},
+				{
+					"name": "sizeof.amigae",
+					"match": "\\b(INC|DEC)\\s+([_$[:alpha:]]\\w*\\b)",
+					"captures": {
+						"1": {"name" : "keyword.control.amigae"},
+						"2": {"name" : "variable.amigae"}
+					}
+				},
+				{
+					"name": "entity.name.goto-label",
+					"match": "\\b[_$[:alpha:]]\\w*\\:"
+				},
+				{
+					"name": "jump.amigae",
+					"match": "\\b(JUMP)\\s+([_$[:alpha:]]\\w*\\b)",
+					"captures": {
+						"1": {"name" : "keyword.control.amigae"},
+						"2": {"name" : "entity.name.goto-label"}
+					}
 				},
 				{ 
 					"include": "#expression" 
@@ -268,6 +313,12 @@
 				"match": "\\b(\\+|-|\\*|/|\\^|AND|OR|<|>|<>|=)\\b"
 			}]
 		},
+		"bool-constants": {
+			"patterns": [{
+				"name": "constant.language.boolean",
+				"match": "\\b(TRUE|FALSE)\\b"
+			}]
+		},		
 		"nil": {
 			"patterns": [{
 				"name": "constant.language.nil.amigae",
@@ -502,7 +553,41 @@
 					]
 				}
 			]
-		},		
+		},
+		"select-block": {
+			"begin" : "\\bSELECT\\s+([_$[:alpha:]]\\w*)\\b",
+			"end" : "\\bENDSELECT\\b",
+			"captures": {"0": {"name": "keyword.control.amigae"}},
+			"name":"select.block",
+			"patterns":[
+				{
+					"name":"select.block.expressions",
+					"begin" : "\\bCASE\\b",
+					"captures": {"0": {"name": "keyword.control.amigae"}},
+					"end" : "$",
+					"patterns":[
+						{ "include": "#expression" }
+					]
+				},
+				{
+					"name": "select.block.statements",
+					"begin" : "\\n",
+					"end" : "((?=\\bCASE\\b)|(?=\\bDEFAULT\\b)|(?=\\bENDSELECT\\b))",
+					"patterns": [
+						{ "include": "#statement" }
+					]
+				},				
+				{
+					"name": "select.block.default",
+					"begin" : "DEFAULT",
+					"end" : "(?=\\bENDSELECT\\b)",
+					"captures": {"0": {"name":"keyword.control.amigae"}},
+					"patterns": [
+						{ "include": "#statement" }
+					]
+				}
+			]
+		},
 		"while-loop-one-line-expression": {
 			"begin" : "\\bWHILE\\b\\s+(?=.*\\bDO\\b)",
 			"end" : "\\bDO\\b",
@@ -543,6 +628,7 @@
 					"begin" : "\\n",
 					"end" : "^\\s*(?=\\bENDWHILE\\b)",
 					"patterns": [
+						{ "include": "#loop-exit" },
 						{ "include": "#statement" }
 					]
 				}
@@ -594,12 +680,13 @@
 							]
 						}
 					]
-				},
+				},				
 				{
 					"name": "for.statements",
 					"begin" : "\\n",
 					"end" : "^\\s*(?=\\bENDFOR\\b)",
 					"patterns": [
+						{ "include": "#loop-exit" },
 						{ "include": "#statement" }
 					 ]
 				}			
@@ -630,6 +717,24 @@
 			"patterns": [
 				{ "include": "#expression" }
 		 	]
+		},
+		"loop-block":{
+			"name": "loop.block",
+			"begin": "\\bLOOP\\b",
+			"end": "\\bENDLOOP\\b",
+			"captures" : {"0": {"name": "keyword.control.amigae"}},
+			"patterns": [
+				{ "include": "#statement" }
+		 	]
+		},
+		"loop-exit": {
+			"name": "loop.exit",
+			"begin" : "\\bEXIT\\b",
+			"end" : "$",
+			"captures": {"0":{"name":"keyword.control.amigae"}},
+			"patterns": [
+				{ "include": "#expression" }
+			]
 		}
 	}
 }

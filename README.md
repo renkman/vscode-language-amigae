@@ -10,6 +10,12 @@ This extension enables code highlighting for the Amiga E programming language in
 
 The first draft of is now ready for testing.
 
+### 0.1.3
+
+- Fixed IF grammar bug
+- Added grammar for SELECT block and LOOP block
+- Added keywords SIZEOF, DEC, INC, JUMP and EXIT
+
 ### 0.1.0
 
 - Code and syntax highlighting for Amiga E is implemented
