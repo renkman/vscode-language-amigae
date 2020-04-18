@@ -22,6 +22,9 @@
 			"include": "#enum"
 		},
 		{
+			"include": "#set"
+		},
+		{
 			"include": "#def"
 		},
 		{ 
@@ -101,6 +104,23 @@
 					"captures" : {
 						"1": {"name": "constant.other.enum.amigae"},
 						"2": {"name": "constant.numeric.enum.amigae"}
+					}
+				}
+			]
+		},
+		"set": {
+			"name": "set",
+			"begin": "\\bSET\\b",
+			"end": "$",
+			"captures": {			
+				"0": {"name": "keyword.declaration.set.amigae"}
+			},
+			"patterns": [
+				{
+					"name": "set.constant",
+					"match": "(?:(?<=(?:SET))|(?<=,))\\s*(\\w+)\\s*,?",
+					"captures" : {
+						"1": {"name": "constant.other.enum.amigae"}
 					}
 				}
 			]
