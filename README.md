@@ -17,7 +17,7 @@ This extension enables code highlighting and provides code snippets for the Amig
 
 ## Release Notes
 
-Several grammar fixes
+Several grammar fixes and introduction of code snippets.
 
 ### 0.2.0
 
