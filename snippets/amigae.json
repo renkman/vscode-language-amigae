@@ -30,5 +30,50 @@
           "PROC ${1:name}(${2:arguments}) OF ${3:class} IS $0"
         ],
         "description": "One line class method"
+      },
+      "if" : {
+          "prefix": "if",
+          "body": [
+            "IF ${1:conditions}",
+            "\t$0",
+            "ENDIF"
+          ],
+          "description":"if block"
+      },
+      "while" : {
+        "prefix": "while",
+        "body": [
+          "WHILE ${1:conditions}",
+          "\t$0",
+          "ENDWHILE"
+        ],
+        "description":"while loop"
+      },
+      "for" : {
+        "prefix": "for",
+        "body": [
+          "FOR ${1:var:=expressionA} TO ${2:expressionB}",
+          "\t$0",
+          "ENDFOR"
+        ],
+        "description":"for loop"
+      },
+      "repeat" : {
+        "prefix": "repeat",
+        "body": [
+          "REPEAT",
+          "\t$0",
+          "UNTIL ${1:conditions}"
+        ],
+        "description":"repeat-until loop"
+      },
+      "object": {
+          "prefix": "object",
+          "body": [
+              "OBJECT ${1:name}",
+              "\t$0",
+              "ENDOBJECT"
+          ],
+          "description": "Class declaration"
       }
 }
