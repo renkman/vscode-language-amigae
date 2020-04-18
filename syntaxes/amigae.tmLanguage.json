@@ -301,6 +301,17 @@
 						"2": {"name" : "entity.name.goto-label"}
 					}
 				},
+				{
+					"name": "void.amigae",
+					"begin": "\\b(VOID)\\b",
+					"end": "$",
+					"captures": {
+						"1": {"name" : "keyword.control.amigae"}
+					},
+					"patterns": [
+						{ "include": "#expression" }
+					]
+				},				
 				{ 
 					"include": "#expression" 
 				}
@@ -410,6 +421,10 @@
 						{
 							"name": "keyword.function.amigae",
 							"match": "\\bEXCEPT\\b"
+						},
+						{
+							"name": "keyword.function.amigae",
+							"match": "\\bRETURN\\b"
 						},
 						{ "include": "#statement" }
 					 ]

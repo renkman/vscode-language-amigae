@@ -30,6 +30,10 @@
             "language": "amigae",
             "scopeName": "source.e",
             "path": "./syntaxes/amigae.tmLanguage.json"
+        }],
+        "snippets": [{
+            "language": "amigae",
+            "path": "./snippets/amigae.json"
         }]
     }
 }

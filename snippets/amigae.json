@@ -1,0 +1,34 @@
+{
+    "proc": {
+        "prefix": "proc",
+        "body": [
+          "PROC ${1:name}(${2:arguments})",
+          "\t$0",
+          "ENDPROC"
+        ],
+        "description": "Function block"
+      },
+      "proc-oneline": {
+        "prefix": "proc",
+        "body": [
+          "PROC ${1:name}(${2:arguments}) IS $0"
+        ],
+        "description": "One line function"
+      },
+      "method": {
+        "prefix": "proc",
+        "body": [
+          "PROC ${1:name}(${2:arguments}) OF ${3:class}",
+          "\t$0",
+          "ENDPROC"
+        ],
+        "description": "Class method block"
+      },
+      "method-oneline": {
+        "prefix": "proc",
+        "body": [
+          "PROC ${1:name}(${2:arguments}) OF ${3:class} IS $0"
+        ],
+        "description": "One line class method"
+      }
+}
