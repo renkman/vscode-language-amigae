@@ -1,23 +1,30 @@
 # Amiga E extension for Visual Studio Code
 
-A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) wich provides code highlighting for [Amiga E](http://strlen.com/amiga-e/).
+A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) wich provides syntax highlighting and code snippets for [Amiga E](http://strlen.com/amiga-e/).
 
 When I started to learn Amiga E with [FS-UAE](https://fs-uae.net/) and the original Amiga E compiler by [Wouter van Oortmerssen](http://strlen.com/) (available on [Aminet](http://aminet.net/dev/e)), 
 I have mounted a host directory as harddisk on the emulator for the source code and edited my .e source files with Visual Studio Code. Unfortunately, there was no Amiga E extension for the editor available (Suggestions 
-made by Visual Studio Code for .e files and a search in the Marketplace led to no result).
+made by Visual Studio Code for .e files and a search in the Marketplace led to no proper result).
 
-Thus I just created this extension to access proper highlighted code for my Amiga E experience.
+Thus, I just decided to create an extension for Amiga E.
 
 ## Features
 
-This extension enables code highlighting for the Amiga E programming language in Visual Studio Code.
+This extension enables code highlighting and provides code snippets for the Amiga E programming language in Visual Studio Code.
 
 ![syntax](images/code-highlighting_dark.png)
 ![syntax](images/code-highlighting_light.png)
 
 ## Release Notes
 
-The first draft of the grammar is now ready for testing.
+Several grammar fixes
+
+### 0.2.0
+
+ - Introduced code snippets for function, class and the loop types
+ - Fixed and enhanced grammar
+    - Added RETURN, VOID and SET keywords
+    - Added types for variable declaration
 
 ### 0.1.7
 

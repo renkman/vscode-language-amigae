@@ -8,3 +8,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Extension created
 - Ongoing grammar implementation
+- Introduced code snippets
