@@ -125,7 +125,14 @@
 			"captures": {
 				"1": {"name": "variable.amigae"}
 			},
-			"patterns": [
+			"patterns": [				
+				{
+					"name": "var.declaration.simpletype",
+					"match": "\\s*\\:\\s*\\b(CHAR|LONG|INT)\\b",
+					"captures": {
+						"1": {"name": "keyword.type.amigae"}
+					}
+				},
 				{
 					"name": "var.declaration.array",
 					"match": "\\[(?:(\\d+)|([_$[:alpha:]]\\w*))\\]\\s*\\:\\s*\\b(ARRAY)\\b(?:\\s+\\b(OF)\\b\\s+(?:\\b(ARRAY|CHAR|LONG|INT)\\b|\\b([_$[:alpha:]]\\w*)\\b))?",
