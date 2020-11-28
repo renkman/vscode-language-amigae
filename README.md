@@ -2,11 +2,9 @@
 
 A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) wich provides syntax highlighting and code snippets for [Amiga E](http://strlen.com/amiga-e/).
 
-When I started to learn Amiga E with [FS-UAE](https://fs-uae.net/) and the original Amiga E compiler by [Wouter van Oortmerssen](http://strlen.com/) (available on [Aminet](http://aminet.net/dev/e)), 
-I have mounted a host directory as harddisk on the emulator for the source code and edited my .e source files with Visual Studio Code. Unfortunately, there was no Amiga E extension for the editor available (Suggestions 
-made by Visual Studio Code for .e files and a search in the Marketplace led to no proper result).
+The original Amiga E compiler by [Wouter van Oortmerssen](http://strlen.com/) is available on [Aminet](http://aminet.net/dev/e).
 
-Thus, I just decided to create an extension for Amiga E.
+To compile and run Amiga E code, I use [FS-UAE](https://fs-uae.net/) with a host directory mounted as harddisk on the emulator wich contains the source code and edited my .e source files with Visual Studio Code on the host machine.
 
 ## Features
 
@@ -18,6 +16,10 @@ This extension enables code highlighting and provides code snippets for the Amig
 ## Release Notes
 
 Several grammar fixes and introduction of code snippets.
+
+### 0.2.1
+
+ - Update this REAME file and the git repository link
 
 ### 0.2.0
 

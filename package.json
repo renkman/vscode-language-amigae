@@ -6,10 +6,10 @@
     "author": {
         "name": "Jan Renken"
     },
-    "version": "0.2.0",
+    "version": "0.2.1",
     "repository": {
         "type": "git",
-        "url": "https://github.com/lachsfilet/vscode-language-amigae.git"
+        "url": "https://github.com/renkman/vscode-language-amigae.git"
       },
       "license": "GPL-3.0",
     "engines": {
