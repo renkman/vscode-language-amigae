@@ -4,7 +4,7 @@ A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marke
 
 The original Amiga E compiler by [Wouter van Oortmerssen](http://strlen.com/) is available on [Aminet](http://aminet.net/dev/e).
 
-To compile and run Amiga E code, I use [FS-UAE](https://fs-uae.net/) with a host directory mounted as harddisk on the emulator wich contains the source code and edited my .e source files with Visual Studio Code on the host machine.
+To compile and run Amiga E code, I use [FS-UAE](https://fs-uae.net/) with a host directory mounted as harddisk on the emulator which contains the source code and edited my .e source files with Visual Studio Code on the host machine.
 
 ## Features
 
